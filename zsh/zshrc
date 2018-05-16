@@ -56,15 +56,6 @@ export EDITOR=vim
 
 alias ls='ls --color'
 
-pacman() {
-	if [ $(id -u ) -ne 0 ] 
-	then
-		command pacaur -r "$@"
-	else
-		command pacman "$@"
-	fi
-}
-
 zsh_reload() {
 	exec $SHELL
 }
