@@ -1,5 +1,6 @@
 # Add command not found hook
 #source /usr/share/doc/pkgfile/command-not-found.zsh
+source "/etc/command_not_found.zsh"
 
 # Add colors
 autoload -Uz colors && colors
@@ -70,4 +71,3 @@ alias ls='ls -1 -G'
 #alias systemctl="sudo systemctl"
 alias dfhs="df -h | hgrep '/dev/sd[a-z][0-9]+'"
 
-source "/etc/command_not_found.zsh"
