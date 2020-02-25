@@ -1,6 +1,3 @@
-# Add command not found hook
-source /usr/share/doc/pkgfile/command-not-found.zsh
-
 # Add colors
 autoload -Uz colors && colors
 
@@ -68,3 +65,24 @@ alias ls='ls --color'
 
 alias systemctl="sudo systemctl"
 alias dfhs="df -h | hgrep '/dev/sd[a-z][0-9]+'"
+
+command_not_found_handler() {
+    local pkgs cmd="$1"
+
+    # Check whether $cmd is a binary found in a package
+    pkgs=(${(f)"$(pkgfile -b -v -- "$cmd" 2>/dev/null)"})    
+    if [[ -n "$pkgs" ]]; then
+        printf '%s may be found in the following packages:\n' "$cmd"
+        printf '  %s\n' $pkgs[@]
+    fi 1>&2
+
+    # Try to fix the error with `thefuck`
+    cmd=$(thefuck $@)
+    if [ $? -eq 0 ]; then
+        eval $cmd
+        return $?
+    else
+        printf 'zsh: command not found: %s\n' "$cmd" 1>&2
+    fi 
+    return 127
+}
